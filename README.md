@@ -1,7 +1,7 @@
 HSTreader
 =========
 
-Custom reader for hst data files.
+Custom reader for hst data files. Keep in mind this is a pretty raw version of this and the source needs to be cleaned up.
 
 TODO
 ----
@@ -31,3 +31,4 @@ Future plans
 ----
 - GUI (JavaFX)
 - WebApplet (JavaFX)
+- Cleanup JavaDoc and comments
