@@ -15,6 +15,13 @@ class RecursiveReader{
 	private File top;
 	private File out;
 	
+	public RecursiveReader(String directory) throws FileNotFoundException{
+		top = new File(directory);
+		if (!top.exists()){
+			throw new FileNotFoundException();
+		}
+	}
+	
 	public RecursiveReader(String directory, String out) throws FileNotFoundException{
 		top = new File(directory);
 		this.out = new File(out);
@@ -72,7 +79,15 @@ class RecursiveReader{
 		return this;
 	}
 	
-	public RecursiveReader save(){
+	public RecursiveReader setOut(String out){
+		this.out = new File(out);
+		return this;
+	}
+	
+	public RecursiveReader save() throws Exception{
+		if (out == null){
+			throw new Exception("The out file was not defined");
+		}
 		try {
 			FileWriter fw = new FileWriter(out);
 			BufferedWriter bw = new BufferedWriter(fw);

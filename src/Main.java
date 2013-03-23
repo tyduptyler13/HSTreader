@@ -1,9 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-
 
 /**
  * Notes about the program:
@@ -15,9 +12,9 @@ import javafx.stage.FileChooser;
  * @author Tyler
  *
  */
-final class Interface{
+final class Main{
 	
-	public void testReader(String file){
+	public static void testReader(String file){
 		System.out.println("[HST Reader] This is a testing feature... It will test the reader on a single file and will not save results.");
 		Reader r = new Reader(new File(file)).read().sort();
 		System.out.println("[HST Reader] The following is the sorted data:");
@@ -26,21 +23,21 @@ final class Interface{
 		System.out.println(r.getLastString());
 	}
 	
-	public void openInterface(){
-		
+	public static void openInterface(){
 		System.out.println("Use the GUI to choose your file locations.");
-		DirectoryChooser dc = new DirectoryChooser();
-		dc.setInitialDirectory(new File(System.getProperty("user.home")));
-		dc.setTitle("Choose search directory");
-		File top = dc.showDialog(arg0)
+		GUI g = new GUI();
+		g.launch(new String[0]);
 	}
 	
-	public void readDirectory(String directory, String output){
+	public static void readDirectory(String directory, String output){
 		try {
 			RecursiveReader rr = new RecursiveReader(directory, output);
 			rr.getFiles().scanFiles().save();
 		} catch (FileNotFoundException e) {
 			System.out.println("Sorry but the directory does not seem to exist.");
+		} catch (Exception e) {
+			System.out.println("An error has occured. System will exit.");
+			System.exit(1);
 		}
 	}
 
@@ -50,18 +47,16 @@ final class Interface{
 	 */
 	public static void main(String[] args){
 		
-		Interface i = new Interface();
-		
 		if (args.length == 1){
-			i.testReader(args[0]);
+			testReader(args[0]);
 		} else if (args.length == 0){
-			i.openInterface();
+			openInterface();
 		} else if (args.length>2){
 			System.out.println("[HST Reader] Too many args... Ignoring the extra ones.");
 			System.out.println("[HST Reader] Usage: hstparser [dir] [output.file]");
 			System.out.println("[HST Reader] Dir is the directory you wish to look in and output.file is the filename to print to.");
 		} else {
-			i.readDirectory(args[0], args[1]);
+			readDirectory(args[0], args[1]);
 		}
 		
 	}
