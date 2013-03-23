@@ -17,12 +17,9 @@ public class GUI extends Application{
 	public void start(Stage s) throws Exception {
 		s.setTitle("HSTreader");
 
-		Group root = new Group();
+		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root, 200, 150);
-		scene.setFill(Color.BLACK);
-
-		BorderPane bp = new BorderPane();
-		root.getChildren().add(bp);
+		//scene.setFill(Color.BLACK);
 
 		//Top
 		{
@@ -30,6 +27,7 @@ public class GUI extends Application{
 			title.setFont(new Font(20));
 			title.setTextAlignment(TextAlignment.CENTER);
 			title.setText("HST Reader");
+			root.getChildren().add(title);
 		}
 
 		//Center
@@ -45,19 +43,44 @@ public class GUI extends Application{
 				loader.getChildren().add(title);
 				Button open = new Button("Open Directory");
 				//TODO
+				
+				content.getChildren().add(loader);
 			}
+			root.getChildren().add(content);
 		}
 
 		//Bottom
-		Text t = new Text();
-		t.setFont(new Font(10));
-		t.setTextAlignment(TextAlignment.CENTER);
-		t.setText("HST Reader (beta) - Tyler Scott");
-		bp.setBottom(t);
+		{
+			Text t = new Text();
+			t.setFont(new Font(10));
+			t.setTextAlignment(TextAlignment.CENTER);
+			t.setText("HST Reader (beta) - Tyler Scott");
+			root.setBottom(t);
+		}
 
 		s.setScene(scene);
 		s.show();
 	}
+	
+	public static void openInterface(){
+		System.out.println("Use the GUI to choose your file locations.");
+		launch(new String[0]);
+	}
 
+	public static void main(String[] args){
+
+		if (args.length == 1){
+			Main.testReader(args[0]);
+		} else if (args.length == 0){
+			openInterface();
+		} else if (args.length>2){
+			System.out.println("[HST Reader] Too many args... Ignoring the extra ones.");
+			System.out.println("[HST Reader] Usage: hstparser [dir] [output.file]");
+			System.out.println("[HST Reader] Dir is the directory you wish to look in and output.file is the filename to print to.");
+		} else {
+			Main.readDirectory(args[0], args[1]);
+		}
+
+	}
 
 }

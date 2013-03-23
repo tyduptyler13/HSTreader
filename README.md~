@@ -25,7 +25,7 @@ This will invoke only the file reader and test its output and sorting.
 
 Current requirements
 ----
-You must have the LATEST java 7 installed on your computer.
+You must have java 7 installed on your computer.
 
 Future plans
 ----
