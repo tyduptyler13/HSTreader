@@ -15,6 +15,13 @@ class RecursiveReader{
 	private File top;
 	private File out;
 	
+	public RecursiveReader(File file) throws FileNotFoundException{
+		top = file;
+		if (!top.exists()){
+			throw new FileNotFoundException();
+		}
+	}
+	
 	public RecursiveReader(String directory) throws FileNotFoundException{
 		top = new File(directory);
 		if (!top.exists()){
@@ -79,9 +86,13 @@ class RecursiveReader{
 		return this;
 	}
 	
-	public RecursiveReader setOut(String out){
-		this.out = new File(out);
+	public RecursiveReader setOut(File file){
+		this.out = file;
 		return this;
+	}
+	
+	public int getFileCount(){
+		return files.size();
 	}
 	
 	public RecursiveReader save() throws Exception{

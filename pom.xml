@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>HSTreader</groupId>
   <artifactId>HSTreader</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   <name>HSTreader</name>
   <description>A hst file reader</description>
   <build>
