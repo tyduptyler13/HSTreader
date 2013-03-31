@@ -1,11 +1,8 @@
 HSTreader
 =========
 
-Custom reader for hst data files. Keep in mind this is a pretty raw version of this and the source needs to be cleaned up.
-
-TODO
-----
-* Finish GUI version.
+Custom reader for hst data files. The GUI will work if you are running windows and have Java 7.
+Otherwise please refer to the method below.
 
 How to use
 ----
@@ -27,8 +24,12 @@ Current requirements
 ----
 You must have the LATEST java 7 installed on your computer.
 
+Known Issues
+----
+* Some compatibility issues with GUI and other Systems. Will compile a version for Linux and PC. (No mac access so I can't compile for it)
+* Some computers will prevent you from selecting folders without admin rights. You may need to run with elevated priveledges.
+
 Future plans
 ----
-- GUI (JavaFX)
 - WebApplet (JavaFX)
 - Cleanup JavaDoc and comments
