@@ -2,21 +2,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -75,8 +69,12 @@ public class GUI extends Application{
 						DirectoryChooser dc = new DirectoryChooser();
 						dc.setInitialDirectory(new File(System.getProperty("user.home")));
 						in = dc.showDialog(scene.getWindow());
-						log("In directory set to "+ in.getPath());
-						parse.setDisable(false);
+						if (in !=null){
+							log("In directory set to "+ in.getPath());
+							parse.setDisable(false);
+						}else{
+							log("Path was not set! Please try again!");
+						}
 					}
 				});
 				content.getChildren().add(open);
