@@ -60,8 +60,10 @@ public class Data implements Comparable<Data>{
 	 */
 	public int compareTo(Data data) {
 		int app = this.appliance - data.appliance;
-		int no = this.number - data.number;
-		app *= 1000;//Need to offset no completely. If number ever is larger than 1000. This will be an issue.
-		return app+no;
+		if (app == 0){
+			return this.number - data.number;
+		} else {
+			return app;
+		}
 	}
 }
