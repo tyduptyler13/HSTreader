@@ -1,179 +1,115 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Separator;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 
-public class GUI extends Application{
 
-	File in;
-	TextArea console;
-	RecursiveReader rr;
-	private final String desc = "Description: This program will find all files within the load directory. "+
-								"It will then sort all entries in each file by column 5 and then by column 1. "+
-								"After this it will pick out the last entry of each value in column 5 and save them.";
+public class GUI extends JPanel implements ActionListener{
 
-	@Override
-	public void start(Stage s) throws Exception {
-		s.setTitle("HSTreader");
-
-		BorderPane root = new BorderPane();
-		root.setPrefSize(500, 400);
-		final Scene scene = new Scene(root);
-		//scene.setFill(Color.BLACK);
-
-		//Top
-		{
-			Text title = new Text();
-			title.setFont(new Font(20));
-			title.setTextAlignment(TextAlignment.CENTER);
-			title.setText("HST Reader");
-			root.setAlignment(title, Pos.TOP_CENTER);
-			root.setTop(title);
-		}	
-		//Center
-		{
-			VBox content = new VBox();
-			final Button parse = new Button("Parse");
-			final Button save = new Button("Save");
-			//Description
-			{
-				Text d = new Text();
-				d.setFont(new Font(14));
-				d.setText(desc);
-				d.setWrappingWidth(500);
-				content.getChildren().add(d);
-			}
-			Separator s1 = new Separator();
-			content.getChildren().add(s1);
-			//Loader
-			{
-				Button open = new Button("Open Directory");
-				open.setOnAction(new EventHandler<ActionEvent>(){
-					public void handle(ActionEvent e){
-						DirectoryChooser dc = new DirectoryChooser();
-						dc.setInitialDirectory(new File(System.getProperty("user.home")));
-						in = dc.showDialog(scene.getWindow());
-						if (in !=null){
-							log("In directory set to "+ in.getPath());
-							parse.setDisable(false);
-						}else{
-							log("Path was not set! Please try again!");
-						}
-					}
-				});
-				content.getChildren().add(open);
-			}
-			Separator s2 = new Separator();
-			content.getChildren().add(s2);
-			//Pseudo Console
-			{
-				console = new TextArea();
-				console.setEditable(false);
-				content.getChildren().add(console);
-			}
-			Separator s3 = new Separator();
-			content.getChildren().add(s3);
-			//Add Parse button
-			{
-				parse.setDisable(true);
-				parse.setOnAction(new EventHandler<ActionEvent>(){
-
-					public void handle(ActionEvent arg0) {
-						try {
-							rr = new RecursiveReader(in);
-							log("Scanning for hst files.");
-							rr.getFiles();
-							log("Found "+rr.getFileCount()+" files. Parsing... This can take some time.");
-							rr.scanFiles();
-							save.setDisable(false);
-							log("Files parsed.");
-						} catch (FileNotFoundException e) {
-							console.appendText("[error] The directory does not exist... try again.\r\n");
-						}
-						
-					}
-					
-				});
-				content.getChildren().add(parse);
-			}
-			//Add save button
-			{
-				save.setDisable(true);
-				save.setOnAction(new EventHandler<ActionEvent>(){
-					public void handle(ActionEvent e) {
-						FileChooser fc = new FileChooser();
-						fc.setInitialDirectory(new File(System.getProperty("user.home")));
-						fc.setTitle("Choose a save file");
-						rr.setOut(fc.showSaveDialog(scene.getWindow()));
-						try {
-							rr.save();
-							log("Contents have been saved.");
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							console.appendText("[error] An error has occured. Full trace printed to console.\r\n");
-							e1.printStackTrace();
-
-						}
-					}
-				});
-				content.getChildren().add(save);
-			}
-			root.setCenter(content);
-		}
-
-		//Bottom
-		{
-			Text t = new Text();
-			t.setFont(new Font(10));
-			t.setTextAlignment(TextAlignment.CENTER);
-			t.setText("HST Reader (beta) - Tyler Scott");
-			root.setAlignment(t, Pos.BOTTOM_RIGHT);
-			root.setBottom(t);
-		}
-
-		s.setScene(scene);
-		s.show();
-	}
-
-	public void log(String s){
-		console.appendText("[HSTreader] "+s+"\r\n");
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7632908392074124134L;
+	protected JButton open, search, parse, save;
+	protected JTextArea console;
+	
+	private GUI(){
+		
+		open = new JButton("Open Folder");
+		open.setVerticalTextPosition(AbstractButton.CENTER);
+		open.setHorizontalTextPosition(AbstractButton.LEADING);
+		open.setActionCommand("open");
+		open.addActionListener(this);
+		
+		search = new JButton("Search");
+		search.setVerticalTextPosition(AbstractButton.CENTER);
+		search.setHorizontalTextPosition(AbstractButton.LEADING);
+		search.setActionCommand("search");
+		search.setEnabled(false);
+		search.addActionListener(this);
+		
+		parse = new JButton("Search");
+		parse.setVerticalTextPosition(AbstractButton.CENTER);
+		parse.setHorizontalTextPosition(AbstractButton.LEADING);
+		parse.setActionCommand("parse");
+		parse.setEnabled(false);
+		parse.addActionListener(this);
+		
+		save = new JButton("Save");
+		save.setVerticalTextPosition(AbstractButton.CENTER);
+		save.setHorizontalTextPosition(AbstractButton.LEADING);
+		save.setActionCommand("save");
+		save.setEnabled(false);
+		save.addActionListener(this);
+		
+		console = new JTextArea();
+		console.setEditable(false);
+		console.setWrapStyleWord(true);
+		console.setPreferredSize(new Dimension(450,200));
+		JScrollPane cscroll = new JScrollPane(console);
+		cscroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		
+		add(open);
+		add(search);
+		add(parse);
+		add(save);
+		add(console);
 	}
 	
-	public static void openInterface(){
-		System.out.println("Use the GUI to choose your file locations.");
-		launch(new String[0]);
-	}
-
-	public static void main(String[] args){
-
-		if (args.length == 1){
-			Main.testReader(args[0]);
-		} else if (args.length == 0){
-			openInterface();
-		} else if (args.length>2){
-			System.out.println("[HST Reader] Too many args... Ignoring the extra ones.");
-			System.out.println("[HST Reader] Usage: hstparser [dir] [output.file]");
-			System.out.println("[HST Reader] Dir is the directory you wish to look in and output.file is the filename to print to.");
-		} else {
-			Main.readDirectory(args[0], args[1]);
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("open")){
+			
+		}else if (e.getActionCommand().equals("search")){
+			
+		}else if (e.getActionCommand().equals("parse")){
+			
+		}else if (e.getActionCommand().equals("save")){
+			
 		}
-
+	}
+	
+	protected void print(String s){
+		console.append("[HST Reader] "+s+"\r\n");
 	}
 
+	public static void createAndShowGUI() {
+		JFrame frame = new JFrame("HST Reader");
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) {
+			Main.print("The UI could not find the default system look and feel!");
+		} catch (InstantiationException e) {
+			Main.print("The UI could not create the look and feel.");
+		} catch (IllegalAccessException e) {
+			Main.print("The UI could not access the look and feel.");
+		} catch (UnsupportedLookAndFeelException e) {
+			Main.print("The UI look and feel is unsupported.");
+		}finally{
+			Main.print("The UI will use the default look and feel.");
+		}
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		GUI gui = new GUI();
+		gui.setOpaque(true);
+		frame.setContentPane(gui);
+		frame.setSize(500, 300);
+		
+		frame.pack();
+		frame.setVisible(true);
+		
+		gui.print("Reader is ready. Please choose a folder.");
+	}
+	
+	
+	
 }

@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import javax.swing.SwingUtilities;
+
 
 /**
  * Notes about the program:
@@ -14,12 +16,16 @@ import java.io.FileNotFoundException;
  */
 public class Main{
 	
+	public static void print(String s){
+		System.out.println("[HSTreader] "+s);
+	}
+	
 	public static void testReader(String file){
-		System.out.println("[HST Reader] This is a testing feature... It will test the reader on a single file and will not save results.");
+		print("This is a testing feature... It will test the reader on a single file and will not save results.");
 		Reader r = new Reader(new File(file)).read().sort();
-		System.out.println("[HST Reader] The following is the sorted data:");
+		print("The following is the sorted data:");
 		System.out.println(r.toString());
-		System.out.println("[HST Reader] These are the last entries in the list of each value:");
+		print("These are the last entries in the list of each value:");
 		System.out.println(r.getLastString());
 	}
 	
@@ -41,5 +47,25 @@ public class Main{
 	 * Creates the reader and sorter.
 	 * @param args
 	 */
+	
+	public static void main(String[] args){
+
+		if (args.length == 1){
+			Main.testReader(args[0]);
+		} else if (args.length == 0){
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run(){
+					GUI.createAndShowGUI();
+				}
+			});
+		} else if (args.length>2){
+			print("Too many args... Ignoring the extra ones.");
+			print("Usage: hstparser [dir] [output.file]");
+			print("Dir is the directory you wish to look in and output.file is the filename to print to.");
+		} else {
+			Main.readDirectory(args[0], args[1]);
+		}
+
+	}
 	
 }
