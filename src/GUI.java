@@ -1,4 +1,6 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -29,6 +31,12 @@ public class GUI extends JPanel implements ActionListener{
 	private RecursiveReader rr;
 	
 	private GUI(){
+		
+		JPanel root = new JPanel();
+		root.setLayout(new BorderLayout());
+		
+		JPanel buttonbar = new JPanel();
+		buttonbar.setLayout(new FlowLayout());
 		
 		open = new JButton("Open Folder");
 		open.setVerticalTextPosition(AbstractButton.CENTER);
@@ -65,11 +73,15 @@ public class GUI extends JPanel implements ActionListener{
 		cscroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
 		
-		add(open);
-		add(search);
-		add(parse);
-		add(save);
-		add(console);
+		buttonbar.add(open);
+		buttonbar.add(search);
+		buttonbar.add(parse);
+		buttonbar.add(save);
+		
+		root.add(buttonbar, BorderLayout.CENTER);
+		root.add(console, BorderLayout.PAGE_END);
+		
+		add(root);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
