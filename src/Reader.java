@@ -23,7 +23,7 @@ public class Reader{
 		part = Integer.parseInt(name.split(",")[0].substring(12));
 
 		String map = file.getParent();
-		String[] tmp = map.split(file.separator);
+		String[] tmp = map.split("[\\\\|/|:|\\.]");
 		this.map = tmp[tmp.length-1];
 	}
 
@@ -36,7 +36,7 @@ public class Reader{
 		part = Integer.parseInt(name.split(",")[0].substring(12));
 
 		String map = file.getParent();
-		String[] tmp = map.split(file.separator);
+		String[] tmp = map.split("[\\\\|/|:|\\.]");
 		this.map = tmp[tmp.length-1];
 
 
